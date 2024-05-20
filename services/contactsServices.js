@@ -55,4 +55,26 @@ async function addContact(name, email, phone) {
   return newContact;
 }
 
-export default { listContacts, getContactById, removeContact, addContact };
+async function updatedContact(contactId, contactData) {
+  const contacts = await readContacts();
+  const contact = contacts.find((contact) => contact.id === contactId);
+  if (typeof contact === "undefined") {
+    return null;
+  }
+  const renewContacts = contacts.filter((contact) => contact.id !== contactId);
+  const renewContact = {
+    ...contact,
+    ...contactData,
+  };
+  renewContacts.push(renewContact);
+  writeContacts(renewContacts);
+  return renewContact;
+}
+
+export {
+  listContacts,
+  getContactById,
+  removeContact,
+  addContact,
+  updatedContact,
+};
